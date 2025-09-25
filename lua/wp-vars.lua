@@ -132,7 +132,10 @@ M.setup = function(cfg)
 		end
 
 		source.complete = function(self, request, callback)
-			if not vim.tbl_contains(M.__conf.cmp_filetypes, request.context.filetype) then
+			local is_theme_json = request.context.filetype == "json" and vim.fn.expand('%:t') == "theme.json"
+			local is_allowed_filetype = vim.tbl_contains(M.__conf.cmp_filetypes, request.context.filetype)
+			
+			if not (is_allowed_filetype or is_theme_json) then
 				callback({ isIncomplete = true })
 				return
 			end

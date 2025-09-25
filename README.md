@@ -69,7 +69,6 @@ preset_mappings = {
 - `preset_type`: Used in CSS variable name.
 - `value_key`: Field containing the CSS value.
 
-## Notes
+## Credits
 
-- Restart nvim after making changes to `theme.json` to show latest suggestions.
 - Inspired by [css-vars.nvim](https://github.com/jdrupal-dev/css-vars.nvim) (Thanks!)
