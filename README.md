@@ -62,12 +62,17 @@ Extend the default mappings:
 preset_mappings = {
   -- defaults are included automatically
   { path = "custom.gradients", preset_type = "gradient", value_key = "gradient" },
+  -- Override sort order
+  { path = "spacing.spacingSizes", preset_type = "spacing", value_key = "size", sort_key = "slug" },
 }
 ```
+
+**`preset_mappings` options:**
 
 - `path`: Dot notation path in theme.json.
 - `preset_type`: Used in CSS variable name.
 - `value_key`: Field containing the CSS value.
+- `sort_key`: (Optional) Theme.json key to use for nvim-cmp sort order. Defaults to `name` field with a fallback to `slug`.
 
 ## Credits
 

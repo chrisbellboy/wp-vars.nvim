@@ -6,7 +6,7 @@ local defaults = {
 	cmp_filetypes = { "css", "scss" },
 	preset_mappings = {
 		{ path = "color.palette", preset_type = "color", value_key = "color" },
-		{ path = "spacing.spacingSizes", preset_type = "spacing", value_key = "size" },
+		{ path = "spacing.spacingSizes", preset_type = "spacing", value_key = "size", sort_key = "slug" },
 		{ path = "typography.fontSizes", preset_type = "font-size", value_key = "size" },
 		{ path = "typography.fontFamilies", preset_type = "font-family", value_key = "fontFamily" },
 	},
@@ -100,10 +100,12 @@ M.setup = function(cfg)
 						for _, item in ipairs(data) do
 							if item.slug then
 								local css_var = "--wp--preset--" .. mapping.preset_type .. "--" .. item.slug
+								local sort_key = mapping.sort_key and item[mapping.sort_key] or (item.name or item.slug)
 								table.insert(css_vars, {
 									var = css_var,
 									value = item[mapping.value_key] or "",
 									name = item.name or item.slug,
+									sort_key = sort_key,
 								})
 							end
 						end
@@ -132,9 +134,9 @@ M.setup = function(cfg)
 		end
 
 		source.complete = function(self, request, callback)
-			local is_theme_json = request.context.filetype == "json" and vim.fn.expand('%:t') == "theme.json"
+			local is_theme_json = request.context.filetype == "json" and vim.fn.expand("%:t") == "theme.json"
 			local is_allowed_filetype = vim.tbl_contains(M.__conf.cmp_filetypes, request.context.filetype)
-			
+
 			if not (is_allowed_filetype or is_theme_json) then
 				callback({ isIncomplete = true })
 				return
@@ -155,7 +157,7 @@ M.setup = function(cfg)
 						menu = "wp-var",
 						documentation = css_var_data.value .. " (" .. css_var_data.name .. ")",
 						insertText = css_var_data.var,
-						sortText = css_var_data.var,
+						sortText = css_var_data.sort_key,
 					})
 				end
 
